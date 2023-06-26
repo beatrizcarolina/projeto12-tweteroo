@@ -38,4 +38,14 @@ app.post('/tweets', (req, res) => {
   }
 });
 
+app.get('/tweets', (req, res) => {
+  let lastTenTweets = tweets.slice(-10);
+  for(let i=0; i < lastTenTweets.length; i++){
+    let userTweet = users.find(user => user.username === lastTenTweets[i].username);
+    lastTenTweets[i].avatar = userTweet.avatar;   
+  } 
+  console.log(lastTenTweets);
+  res.send(lastTenTweets);
+});
+
 app.listen(PORT,  () => console.log(`Running server on port ${PORT}`));
