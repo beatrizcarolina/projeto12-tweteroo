@@ -7,6 +7,7 @@ app.use(express.json());
 
 const PORT = 5000;
 let users = [];
+let tweets = [];
 
 app.post('/sign-up', (req, res) => {
   const user = req.body;
@@ -17,6 +18,23 @@ app.post('/sign-up', (req, res) => {
   } else {
     users.push(user);
     res.status(200).json({ message: "OK" });
+  }
+});
+
+app.post('/tweets', (req, res) => {
+  const tweet = req.body;
+  console.log(tweet);
+
+  if(tweet.username === "" || tweet.tweet === "" || typeof tweet.username !== "string" || typeof tweet.tweet !== "string"){
+    res.status(400).json({message:"Todos os campos são obrigatórios!"});
+    return;
+  }
+
+  if(users.find(loggedUser => loggedUser.username === tweet.username)){
+    tweets.push(tweet);
+    res.status(200).json({ message: "OK" });
+  } else {
+    res.status(401).json({ message: "UNAUTHORIZED" });
   }
 });
 
